@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const config = require("config");
 
 module.exports = function () {
-  const db = config.get("db");
+  const db = config.get("dbUrl");
+  console.log(db);
   mongoose
     .connect(db, {
       useNewUrlParser: true,
