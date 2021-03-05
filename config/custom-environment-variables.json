@@ -1,3 +1,4 @@
 {
-  "jwtPrivateKey": "ralecom_jwtPrivateKey"
+  "jwtPrivateKey": "ralecom_jwtPrivateKey",
+  "dbUrl":"db_url"
 }
