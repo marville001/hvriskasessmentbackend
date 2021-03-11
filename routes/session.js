@@ -3,7 +3,8 @@ const _ = require("lodash");
 const auth = require("../middleware/auth");
 const router = express.Router();
 const { Session, validate } = require("../models/session");
-const ObjectId = require('mongoose').Types.ObjectId;
+const { Caller, validateCaller } = require("../models/caller");
+const ObjectId = require("mongoose").Types.ObjectId;
 
 // router.get("/search", async (req, res) => {
 //   const { query } = req.query;
@@ -35,9 +36,20 @@ router.post("/create", auth, async (req, res) => {
       message: error.details[0].message,
     });
 
+  let session = await Session.findOne({
+    employeenumber: req.body.employeenumber,
+    state: "ongoing",
+  });
+
+  if (session)
+    return res.status(400).send({
+      success: false,
+      message: "You have an ongoing session. You cannot create another session",
+    });
+
   const { employeenumber, date, state, step } = req.body;
 
-  const session = new Session({
+  session = new Session({
     employeenumber,
     date,
     state,
@@ -51,21 +63,72 @@ router.post("/create", auth, async (req, res) => {
   });
 });
 
+router.post("/caller-details", auth, async (req, res) => {
+  const { error } = validateCaller(req.body);
+  if (error)
+    return res.status(400).send({
+      success: false,
+      message: error.details[0].message,
+    });
+
+  let caller = await Caller.findOne({
+    email: req.body.email,
+  });
+
+  if (caller) {
+    const updated_caller = await Caller.findByIdAndUpdate(
+      caller._id,
+      { location: req.body.location },
+      { new: true }
+    );
+    return res.status(200).send({
+      success: false,
+      message: "Caller Exists",
+      caller: updated_caller,
+    });
+  }
+
+  const {
+    name,
+    number,
+    email,
+    supervisor,
+    organization_address,
+    organization_number,
+    location,
+    organization,
+  } = req.body;
+
+  caller = new Caller({
+    name,
+    number,
+    email,
+    supervisor,
+    organization_address,
+    organization_number,
+    location,
+    organization,
+  });
+  const result = await caller.save();
+
+  res.send({
+    success: true,
+    caller: result,
+  });
+});
+
 router.post("/all", auth, async (req, res) => {
   const { empid } = req.body;
-  console.log(empid);
   let result = await Session.find().select("-__v");
-  sessions = result.filter(
-    (s) => s.employeenumber === empid
-  );
-  
+  sessions = result.filter((s) => s.employeenumber === empid);
+
   res.send({ success: true, sessions: sessions });
 });
 
-router.get("/:id",async (req, res) => {
+router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
-  if(!ObjectId.isValid(id)){
+  if (!ObjectId.isValid(id)) {
     return res.status(404).send({
       success: true,
       message: "Invalid Session Id",
@@ -79,6 +142,7 @@ router.get("/:id",async (req, res) => {
         "_id",
         "date",
         "state",
+        "step",
         "employeenumber",
       ]),
     });
@@ -86,6 +150,42 @@ router.get("/:id",async (req, res) => {
     res.status(404).send({
       success: true,
       message: "No session Found",
+    });
+  }
+});
+
+router.put("/updatesession/:id", auth, async (req, res) => {
+  const { id } = req.params;
+
+  if (!ObjectId.isValid(id)) {
+    return res.status(404).send({
+      success: true,
+      message: "Could not verify the session id",
+    });
+  }
+
+  try {
+    let session = await Session.findByIdAndUpdate(
+      id,
+      { step: req.body.step, state: req.body.state },
+      { new: true }
+    );
+
+    res.send({
+      success: true,
+      session: _.pick(session, [
+        "_id",
+        "date",
+        "state",
+        "step",
+        "employeenumber",
+      ]),
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      success: false,
+      message: "An error occured",
     });
   }
 });
