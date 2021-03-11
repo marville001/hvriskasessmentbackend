@@ -4,29 +4,10 @@ const auth = require("../middleware/auth");
 const router = express.Router();
 const { Session, validate } = require("../models/session");
 const { Caller, validateCaller } = require("../models/caller");
+const { Vehicle, validateVehicle } = require("../models/vehicle");
+const { Rparty, validateRparty } = require("../models/rparty");
 const ObjectId = require("mongoose").Types.ObjectId;
 
-// router.get("/search", async (req, res) => {
-//   const { query } = req.query;
-
-//   const result = await Product.find().select("-__v");
-//   let products = [];
-//   if (query.indexOf(" ") === -1) {
-//     products = result.filter(
-//       (p) =>
-//         p.name.toLowerCase().split(" ").includes(query) ||
-//         p.description.toLowerCase().split(" ").includes(query)
-//     );
-//   } else {
-//     products = result.filter(
-//       (p) =>
-//         p.name.toLowerCase().includes(query) ||
-//         p.description.toLowerCase().includes(query)
-//     );
-//   }
-
-//   res.send({ success: true, products });
-// });
 
 router.post("/create", auth, async (req, res) => {
   const { error } = validate(req.body);
@@ -71,26 +52,10 @@ router.post("/caller-details", auth, async (req, res) => {
       message: error.details[0].message,
     });
 
-  let caller = await Caller.findOne({
-    email: req.body.email,
-  });
-
-  if (caller) {
-    const updated_caller = await Caller.findByIdAndUpdate(
-      caller._id,
-      { location: req.body.location },
-      { new: true }
-    );
-    return res.status(200).send({
-      success: false,
-      message: "Caller Exists",
-      caller: updated_caller,
-    });
-  }
-
   const {
     name,
     number,
+    sessionid,
     email,
     supervisor,
     organization_address,
@@ -99,8 +64,9 @@ router.post("/caller-details", auth, async (req, res) => {
     organization,
   } = req.body;
 
-  caller = new Caller({
+  let caller = new Caller({
     name,
+    sessionid,
     number,
     email,
     supervisor,
@@ -114,6 +80,69 @@ router.post("/caller-details", auth, async (req, res) => {
   res.send({
     success: true,
     caller: result,
+  });
+});
+
+router.post("/rparty-details", auth, async (req, res) => {
+  const { error } = validateRparty(req.body);
+  if (error)
+    return res.status(400).send({
+      success: false,
+      message: error.details[0].message,
+    });
+
+  const {
+    name,
+    number,
+    sessionid,
+    address,
+    claim_number,
+    policy,
+    insuranceprovider,
+  } = req.body;
+
+  let rparty = new Rparty({
+    name,
+    number,
+    sessionid,
+    address,
+    claim_number,
+    policy,
+    insuranceprovider,
+  });
+  const result = await rparty.save();
+
+  res.send({
+    success: true,
+    rparty: result,
+  });
+
+});
+
+router.post("/vehicle-details", auth, async (req, res) => {
+  const { error } = validateVehicle(req.body);
+  if (error)
+    return res.status(400).send({
+      success: false,
+      message: error.details[0].message,
+    });
+
+  const { vin, model, sessionid, licence, lpstate, make, year } = req.body;
+
+  let vehicle = new Vehicle({
+    vin,
+    sessionid,
+    model,
+    licence,
+    lpstate,
+    make,
+    year,
+  });
+  const result = await vehicle.save();
+
+  res.send({
+    success: true,
+    vehicle: result,
   });
 });
 
