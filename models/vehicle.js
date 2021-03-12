@@ -4,7 +4,6 @@ const Joi = require("joi");
 const vehicleSchema = new mongoose.Schema({
   make: {
     type: String,
-    minlength: 6,
     maxlength: 50,
   },
   sessionid: {
@@ -14,7 +13,6 @@ const vehicleSchema = new mongoose.Schema({
   },
   model: {
     type: String,
-    minlength: 6,
     maxlength: 255,
   },
   year: {
