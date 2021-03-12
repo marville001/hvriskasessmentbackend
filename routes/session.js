@@ -6,6 +6,7 @@ const { Session, validate } = require("../models/session");
 const { Caller, validateCaller } = require("../models/caller");
 const { Vehicle, validateVehicle } = require("../models/vehicle");
 const { Rparty, validateRparty } = require("../models/rparty");
+const { Hazard, validateHazard } = require("../models/hazard");
 const ObjectId = require("mongoose").Types.ObjectId;
 
 
@@ -37,6 +38,12 @@ router.post("/create", auth, async (req, res) => {
     step,
   });
   const result = await session.save();
+  
+  const hazard = Hazard({
+    sessionid: result._id,
+    quiz: 1
+  })
+  await hazard.save();
 
   res.send({
     success: true,
@@ -120,6 +127,32 @@ router.post("/rparty-details", auth, async (req, res) => {
 });
 
 router.post("/vehicle-details", auth, async (req, res) => {
+  const { error } = validateVehicle(req.body);
+  if (error)
+    return res.status(400).send({
+      success: false,
+      message: error.details[0].message,
+    });
+
+  const { vin, model, sessionid, licence, lpstate, make, year } = req.body;
+
+  let vehicle = new Vehicle({
+    vin,
+    sessionid,
+    model,
+    licence,
+    lpstate,
+    make,
+    year,
+  });
+  const result = await vehicle.save();
+
+  res.send({
+    success: true,
+    vehicle: result,
+  });
+});
+router.put("/hazard-details", auth, async (req, res) => {
   const { error } = validateVehicle(req.body);
   if (error)
     return res.status(400).send({

@@ -7,6 +7,7 @@ const auth = require("../routes/auth");
 const users = require("../routes/users");
 const admin = require("../routes/admin");
 const session = require("../routes/session");
+const hazard = require("../routes/hazard");
 
 module.exports = function (app) {
   app.use(cors());
@@ -15,6 +16,7 @@ module.exports = function (app) {
   app.use("/static", express.static("public"));
   app.use("/", home);
   app.use("/api/session", session);
+  app.use("/api/hazard", hazard);
   app.use("/api/users", users);
   app.use("/api/admin", admin);
   app.use("/api/auth", auth);
