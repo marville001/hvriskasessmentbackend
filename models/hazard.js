@@ -3,19 +3,24 @@ const Joi = require("joi");
 
 const hazardSchema = new mongoose.Schema({
   onfire: {
-    type: Boolean
+    type: Boolean,
+    default: undefined
   },
   smoking: {
-    type: Boolean
+    type: Boolean,
+    default: undefined
   },
   anysound: {
-    type: Boolean
+    type: Boolean,
+    default: undefined
   },
   anysmell: {
-    type: Boolean
+    type: Boolean,
+    default: undefined
   },
   electricshutdown:{
-      type: Boolean
+      type: Boolean,
+      default: undefined
   },
   shutdown:{
     type: String,
@@ -32,6 +37,9 @@ const hazardSchema = new mongoose.Schema({
   level: {
     type: String,
     lowercase: true
+  }, notes: {
+    type: Array,
+    lowercase:true
   }
 });
 

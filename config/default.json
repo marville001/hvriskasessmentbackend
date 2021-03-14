@@ -1,6 +1,6 @@
 {
   "jwtPrivateKey": "",
   "dbUrl": "",
-  "local_db": "mongodb://localhost/hvriskassssment"
+  "local_db": "mongodb://localhost:27017/hvriskassssment"
 }
 
