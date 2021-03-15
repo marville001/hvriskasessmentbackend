@@ -8,6 +8,7 @@ const { Vehicle, validateVehicle } = require("../models/vehicle");
 const { Rparty, validateRparty } = require("../models/rparty");
 const { Hazard, validateHazard } = require("../models/hazard");
 const ObjectId = require("mongoose").Types.ObjectId;
+const { Vdamage } = require("../models/vdamage");
 
 
 router.post("/create", auth, async (req, res) => {
@@ -44,6 +45,12 @@ router.post("/create", auth, async (req, res) => {
     quiz: 1
   })
   await hazard.save();
+
+  const vdamage = Vdamage({
+    sessionid: result._id,
+    quiz: 1
+  })
+  await vdamage.save();
 
   res.send({
     success: true,

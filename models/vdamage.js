@@ -7,7 +7,7 @@ const vdamageSchema = new mongoose.Schema({
     default: undefined,
   },
   damaged: {
-    type: Boolean,
+    type: String,
     default: undefined,
   },
   submerged: {
@@ -61,7 +61,7 @@ const Vdamage = mongoose.model("Vdamage", vdamageSchema);
 function validateVdamage(vdamage) {
   const schema = {
     position: Joi.String(),
-    damaged: Joi.Boolean(),
+    damaged: Joi.String(),
     submerged: Joi.Boolean(),
     bareaflooded: Joi.Boolean(),
     onfire: Joi.Boolean(),
