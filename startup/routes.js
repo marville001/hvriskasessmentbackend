@@ -9,6 +9,7 @@ const admin = require("../routes/admin");
 const session = require("../routes/session");
 const hazard = require("../routes/hazard");
 const vdamage = require("../routes/vdamage");
+const hvdamage = require("../routes/hvdamage");
 
 module.exports = function (app) {
   app.use(cors());
@@ -19,9 +20,9 @@ module.exports = function (app) {
   app.use("/api/session", session);
   app.use("/api/hazard", hazard);
   app.use("/api/vdamage", vdamage);
+  app.use("/api/hvdamage", hvdamage);
   app.use("/api/users", users);
   app.use("/api/admin", admin);
   app.use("/api/auth", auth);
-
   app.use(error);
 };

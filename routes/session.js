@@ -6,9 +6,10 @@ const { Session, validate } = require("../models/session");
 const { Caller, validateCaller } = require("../models/caller");
 const { Vehicle, validateVehicle } = require("../models/vehicle");
 const { Rparty, validateRparty } = require("../models/rparty");
-const { Hazard, validateHazard } = require("../models/hazard");
+const { Hazard } = require("../models/hazard");
 const ObjectId = require("mongoose").Types.ObjectId;
 const { Vdamage } = require("../models/vdamage");
+const { HVdamage } = require("../models/hvdamage");
 
 
 router.post("/create", auth, async (req, res) => {
@@ -51,6 +52,12 @@ router.post("/create", auth, async (req, res) => {
     quiz: 1
   })
   await vdamage.save();
+
+  const hvdamage = HVdamage({
+    sessionid: result._id,
+    quiz: 1
+  })
+  await hvdamage.save();
 
   res.send({
     success: true,
