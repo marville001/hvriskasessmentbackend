@@ -4,23 +4,23 @@ const Joi = require("joi");
 const hazardSchema = new mongoose.Schema({
   onfire: {
     type: Boolean,
-    default: undefined
+    default: null
   },
   smoking: {
     type: Boolean,
-    default: undefined
+    default: null
   },
   anysound: {
     type: Boolean,
-    default: undefined
+    default: null
   },
   anysmell: {
     type: Boolean,
-    default: undefined
+    default: null
   },
   electricshutdown:{
       type: Boolean,
-      default: undefined
+      default: null
   },
   shutdown:{
     type: String,

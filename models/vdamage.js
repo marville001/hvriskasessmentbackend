@@ -4,35 +4,35 @@ const Joi = require("joi");
 const vdamageSchema = new mongoose.Schema({
   position: {
     type: String,
-    default: undefined,
+    default: null,
   },
   damaged: {
     type: String,
-    default: undefined,
+    default: null,
   },
   submerged: {
     type: Boolean,
-    default: undefined,
+    default: null,
   },
   bareaflooded: {
     type: Boolean,
-    default: undefined,
+    default: null,
   },
   onfire: {
     type: Boolean,
-    default: undefined,
+    default: null,
   },
   severity: {
     type: String,
-    default: undefined,
+    default: null,
   },
   airbagdeploys: {
     type: Boolean,
-    default: undefined,
+    default: null,
   },
   whichairbag: {
     type: String,
-    default: undefined,
+    default: null,
   },
   anypartofhvexposed: {
     type: Boolean,
