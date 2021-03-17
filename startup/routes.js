@@ -10,6 +10,8 @@ const session = require("../routes/session");
 const hazard = require("../routes/hazard");
 const vdamage = require("../routes/vdamage");
 const hvdamage = require("../routes/hvdamage");
+const email = require("../routes/email");
+const defaults = require("../routes/defaults");
 
 module.exports = function (app) {
   app.use(cors());
@@ -21,6 +23,8 @@ module.exports = function (app) {
   app.use("/api/hazard", hazard);
   app.use("/api/vdamage", vdamage);
   app.use("/api/hvdamage", hvdamage);
+  app.use("/api/defaults", defaults);
+  app.use("/api/email", email);
   app.use("/api/users", users);
   app.use("/api/admin", admin);
   app.use("/api/auth", auth);

@@ -24,6 +24,8 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "mongoose": "^5.9.10",
+    "nodemailer": "^6.5.0",
+    "nodemailer-smtp-transport": "^2.7.4",
     "nodemon": "^2.0.2",
     "pg": "^7.18.2",
     "winston": "^3.2.1",

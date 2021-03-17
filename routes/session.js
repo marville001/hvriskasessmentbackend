@@ -96,7 +96,10 @@ router.post("/caller-details", auth, async (req, res) => {
     location,
     organization,
   });
+
   const result = await caller.save();
+
+  console.log(result);
 
   res.send({
     success: true,
