@@ -8,7 +8,7 @@ require("./startup/db")();
 require("./startup/config")();
 require("./startup/routes")(app);
 
-const port = process.env.PORT || 5005;
+const port = process.env.PORT || 5050;
 app.listen(port, () => {
   console.log(`Listenning at port ${port}`);
 });

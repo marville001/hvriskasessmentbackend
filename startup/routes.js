@@ -12,6 +12,7 @@ const vdamage = require("../routes/vdamage");
 const hvdamage = require("../routes/hvdamage");
 const email = require("../routes/email");
 const defaults = require("../routes/defaults");
+const upload = require("../routes/upload");
 
 module.exports = function (app) {
   app.use(cors());
@@ -24,6 +25,7 @@ module.exports = function (app) {
   app.use("/api/vdamage", vdamage);
   app.use("/api/hvdamage", hvdamage);
   app.use("/api/defaults", defaults);
+  app.use("/api/upload", upload);
   app.use("/api/email", email);
   app.use("/api/users", users);
   app.use("/api/admin", admin);

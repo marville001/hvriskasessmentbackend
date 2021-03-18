@@ -31,7 +31,7 @@ router.get("/employees/all", auth, async (req, res) => {
   });
 });
 
-router.post("/", auth, async (req, res) => {
+router.post("/", async (req, res) => {
   const { error } = validateAdmin(req.body);
   if (error)
     return res
