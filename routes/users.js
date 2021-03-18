@@ -4,13 +4,14 @@ const _ = require("lodash");
 const router = express.Router();
 const { User, validate } = require("../models/user");
 const auth = require("../middleware/auth");
+const admin = require("../middleware/admin");
 
 router.get("/me", auth, async (req, res) => {
   const user = await User.findById(req.user._id).select("-password");
   res.send({ success: true, user: _.pick(user, ["_id", "name","idnumber", "email"]) });
 });
 
-router.post("/", async (req, res) => {
+router.post("/",auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error)
     return res

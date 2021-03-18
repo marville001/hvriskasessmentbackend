@@ -6,6 +6,8 @@ const router = express.Router();
 const { Admin, validateAdmin } = require("../models/admin");
 const auth = require("../middleware/auth");
 const { User } = require("../models/user");
+const { Session } = require("../models/session");
+const { Caller } = require("../models/caller");
 
 router.get("/me", auth, async (req, res) => {
   const admin = await Admin.findById(req.user._id).select("-password");
@@ -31,7 +33,23 @@ router.get("/employees/all", auth, async (req, res) => {
   });
 });
 
-router.post("/", async (req, res) => {
+router.get("/sessions/all", auth, async (req, res) => {
+  const sessions = await Session.find();
+  res.send({
+    success: true,
+    sessions,
+  });
+});
+
+router.get("/callers/all", auth, async (req, res) => {
+  const callers = await Caller.find();
+  res.send({
+    success: true,
+    callers,
+  });
+});
+
+router.post("/", auth, async (req, res) => {
   const { error } = validateAdmin(req.body);
   if (error)
     return res
