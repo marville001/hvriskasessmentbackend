@@ -10,24 +10,13 @@ const ObjectId = require("mongoose").Types.ObjectId;
 const { Vdamage } = require("../models/vdamage");
 const { HVdamage } = require("../models/hvdamage");
 
-
 router.post("/create", auth, async (req, res) => {
   const { error } = validate(req.body);
+
   if (error)
     return res.status(400).send({
       success: false,
       message: error.details[0].message,
-    });
-
-  let session = await Session.findOne({
-    employeenumber: req.body.employeenumber,
-    state: "ongoing",
-  });
-
-  if (session)
-    return res.status(400).send({
-      success: false,
-      message: "You have an ongoing session. You cannot create another session",
     });
 
   const { employeenumber, date, state, step } = req.body;
@@ -39,23 +28,23 @@ router.post("/create", auth, async (req, res) => {
     step,
   });
   const result = await session.save();
-  
+
   const hazard = Hazard({
     sessionid: result._id,
-    quiz: 1
-  })
+    quiz: 1,
+  });
   await hazard.save();
 
   const vdamage = Vdamage({
     sessionid: result._id,
-    quiz: 1
-  })
+    quiz: 1,
+  });
   await vdamage.save();
 
   const hvdamage = HVdamage({
     sessionid: result._id,
-    quiz: 1
-  })
+    quiz: 1,
+  });
   await hvdamage.save();
 
   res.send({
@@ -93,10 +82,21 @@ router.put("/hazard-details", auth, async (req, res) => {
 
 router.post("/all", auth, async (req, res) => {
   const { empid } = req.body;
-  let result = await Session.find().select("-__v");
-  sessions = result.filter((s) => s.employeenumber === empid);
+  let { state, key, searchby, count } = req.query;
 
-  res.send({ success: true, sessions: sessions });
+  key = key[0];
+
+  let results = await Session.find().select("-__v");
+
+  results = results.slice(0, count);
+
+  if (state === "all") {
+    results = [...results];
+  } else {
+    results = results.filter((result) => result.state === state);
+  }
+  
+  res.send({ success: true, sessions: results });
 });
 
 router.get("/:id", async (req, res) => {
@@ -129,7 +129,6 @@ router.get("/:id", async (req, res) => {
 });
 
 router.put("/updatesession/:id", auth, async (req, res) => {
-  
   const { id } = req.params;
 
   if (!ObjectId.isValid(id)) {
@@ -166,7 +165,6 @@ router.put("/updatesession/:id", auth, async (req, res) => {
 });
 
 router.put("/resume/:id", auth, async (req, res) => {
-  
   const { id } = req.params;
 
   if (!ObjectId.isValid(id)) {
@@ -179,7 +177,7 @@ router.put("/resume/:id", auth, async (req, res) => {
   try {
     let session = await Session.findByIdAndUpdate(
       id,
-      {state: req.body.state },
+      { state: req.body.state },
       { new: true }
     );
 
