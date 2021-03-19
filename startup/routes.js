@@ -7,12 +7,15 @@ const auth = require("../routes/auth");
 const users = require("../routes/users");
 const admin = require("../routes/admin");
 const session = require("../routes/session");
+const caller = require("../routes/caller");
 const hazard = require("../routes/hazard");
 const vdamage = require("../routes/vdamage");
 const hvdamage = require("../routes/hvdamage");
 const email = require("../routes/email");
 const defaults = require("../routes/defaults");
 const upload = require("../routes/upload");
+const rparty = require("../routes/rparty");
+const vehicle = require("../routes/vehicle");
 
 module.exports = function (app) {
   app.use(cors());
@@ -21,6 +24,9 @@ module.exports = function (app) {
   app.use("/static", express.static("public"));
   app.use("/", home);
   app.use("/api/session", session);
+  app.use("/api/caller", caller);
+  app.use("/api/rparty", rparty);
+  app.use("/api/vehicle", vehicle);
   app.use("/api/hazard", hazard);
   app.use("/api/vdamage", vdamage);
   app.use("/api/hvdamage", hvdamage);

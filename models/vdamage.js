@@ -36,7 +36,7 @@ const vdamageSchema = new mongoose.Schema({
   },
   anypartofhvexposed: {
     type: Boolean,
-    lowercase: true,
+    default: null,
   },
   sessionid: {
     type: String,

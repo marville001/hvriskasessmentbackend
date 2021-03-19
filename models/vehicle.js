@@ -8,7 +8,6 @@ const vehicleSchema = new mongoose.Schema({
   },
   sessionid: {
     type: String,
-    required: true,
     maxlength: 50,
   },
   model: {
@@ -21,7 +20,6 @@ const vehicleSchema = new mongoose.Schema({
   },
   vin: {
     type: String,
-    required: true,
     maxlength: 1024,
   },
   lpstate: {
@@ -30,7 +28,6 @@ const vehicleSchema = new mongoose.Schema({
   },
   licence: {
     type: String,
-    required: true,
     maxlength: 1024,
   },
 });
@@ -40,9 +37,9 @@ const Vehicle = mongoose.model("Vehicle", vehicleSchema);
 
 function validateVehicle(vehicle) {
   const schema = {
-    licence: Joi.string().min(5).max(50).required(),
-    sessionid: Joi.string().min(5).max(50).required(),
-    vin: Joi.string().min(5).max(50).required(),
+    licence: Joi.string().min(5).max(50),
+    sessionid: Joi.string().min(5).max(50),
+    vin: Joi.string().min(5).max(50),
     make: Joi.string().max(255),
     model: Joi.string().max(255),
     year: Joi.string().max(255),

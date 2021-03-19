@@ -4,24 +4,20 @@ const Joi = require("joi");
 const callerSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
     minlength: 6,
     maxlength: 50,
   },
   sessionid: {
     type: String,
-    required: true,
     maxlength: 50,
   },
   email: {
     type: String,
-    required: true,
     minlength: 6,
     maxlength: 255,
   },
   number: {
     type: String,
-    required: true,
     maxlength: 255,
   },
   organization: {
@@ -46,15 +42,14 @@ const callerSchema = new mongoose.Schema({
   },
 });
 
-
 const Caller = mongoose.model("Caller", callerSchema);
 
 function validateCaller(caller) {
   const schema = {
-    name: Joi.string().min(5).max(50).required(),
-    sessionid: Joi.string().min(5).max(50).required(),
-    number: Joi.string().max(255).required(),
-    email: Joi.string().min(6).max(255).required().email(),
+    name: Joi.string().min(5).max(50),
+    sessionid: Joi.string().min(5).max(50),
+    number: Joi.string().max(255),
+    email: Joi.string().min(6).max(255).email(),
     supervisor: Joi.string().max(255),
     organization_address: Joi.string().max(1024),
     organization_number: Joi.string().max(1024),

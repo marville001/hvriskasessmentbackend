@@ -5,7 +5,6 @@ const router = express.Router();
 const { Session, validate } = require("../models/session");
 const { Caller, validateCaller } = require("../models/caller");
 const { Vehicle, validateVehicle } = require("../models/vehicle");
-const { Rparty, validateRparty } = require("../models/rparty");
 const { Hazard } = require("../models/hazard");
 const ObjectId = require("mongoose").Types.ObjectId;
 const { Vdamage } = require("../models/vdamage");
@@ -65,110 +64,6 @@ router.post("/create", auth, async (req, res) => {
   });
 });
 
-router.post("/caller-details", auth, async (req, res) => {
-  const { error } = validateCaller(req.body);
-  if (error)
-    return res.status(400).send({
-      success: false,
-      message: error.details[0].message,
-    });
-
-  const {
-    name,
-    number,
-    sessionid,
-    email,
-    supervisor,
-    organization_address,
-    organization_number,
-    location,
-    organization,
-  } = req.body;
-
-  let caller = new Caller({
-    name,
-    sessionid,
-    number,
-    email,
-    supervisor,
-    organization_address,
-    organization_number,
-    location,
-    organization,
-  });
-
-  const result = await caller.save();
-
-  console.log(result);
-
-  res.send({
-    success: true,
-    caller: result,
-  });
-});
-
-router.post("/rparty-details", auth, async (req, res) => {
-  const { error } = validateRparty(req.body);
-  if (error)
-    return res.status(400).send({
-      success: false,
-      message: error.details[0].message,
-    });
-
-  const {
-    name,
-    number,
-    sessionid,
-    address,
-    claim_number,
-    policy,
-    insuranceprovider,
-  } = req.body;
-
-  let rparty = new Rparty({
-    name,
-    number,
-    sessionid,
-    address,
-    claim_number,
-    policy,
-    insuranceprovider,
-  });
-  const result = await rparty.save();
-
-  res.send({
-    success: true,
-    rparty: result,
-  });
-
-});
-
-router.post("/vehicle-details", auth, async (req, res) => {
-  const { error } = validateVehicle(req.body);
-  if (error)
-    return res.status(400).send({
-      success: false,
-      message: error.details[0].message,
-    });
-
-  const { vin, model, sessionid, licence, lpstate, make, year } = req.body;
-
-  let vehicle = new Vehicle({
-    vin,
-    sessionid,
-    model,
-    licence,
-    lpstate,
-    make,
-    year,
-  });
-  const result = await vehicle.save();
-
-  res.send({
-    success: true,
-    vehicle: result,
-  });
-});
 router.put("/hazard-details", auth, async (req, res) => {
   const { error } = validateVehicle(req.body);
   if (error)
