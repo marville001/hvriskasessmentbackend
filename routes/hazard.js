@@ -29,6 +29,7 @@ router.get("/:id", async (req, res) => {
     });
   }
 });
+
 router.put("/onfire", auth, async (req, res) => {
   const { onfire, id } = req.body;
 
@@ -188,6 +189,35 @@ router.put("/shutdown", auth, async (req, res) => {
     let hazard = await Hazard.findByIdAndUpdate(
       id,
       { shutdown: shutdown, quiz: 6 },
+      { new: true }
+    );
+
+    res.send({
+      success: true,
+      hazard,
+    });
+  } catch (error) {
+    res.status(400).send({
+      success: false,
+      message: "An error occured",
+    });
+  }
+});
+
+router.put("/level", auth, async (req, res) => {
+  const { level, id } = req.body;
+
+  if (!ObjectId.isValid(id)) {
+    return res.status(404).send({
+      success: true,
+      message: "Could not verify the session id",
+    });
+  }
+
+  try {
+    let hazard = await Hazard.findByIdAndUpdate(
+      id,
+      { level: level, quiz: 6 },
       { new: true }
     );
 

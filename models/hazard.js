@@ -4,31 +4,31 @@ const Joi = require("joi");
 const hazardSchema = new mongoose.Schema({
   onfire: {
     type: Boolean,
-    default: null
+    default: null,
   },
   smoking: {
     type: Boolean,
-    default: null
+    default: null,
   },
   anysound: {
     type: Boolean,
-    default: null
+    default: null,
   },
   anysmell: {
     type: Boolean,
-    default: null
+    default: null,
   },
-  electricshutdown:{
-      type: Boolean,
-      default: null
+  electricshutdown: {
+    type: Boolean,
+    default: null,
   },
-  shutdown:{
+  shutdown: {
     type: String,
-    lowercase: true
+    lowercase: true,
   },
   sessionid: {
     type: String,
-    required: true
+    required: true,
   },
   quiz: {
     type: Number,
@@ -36,11 +36,13 @@ const hazardSchema = new mongoose.Schema({
   },
   level: {
     type: String,
-    lowercase: true
-  }, notes: {
+    lowercase: true,
+    default: "green",
+  },
+  notes: {
     type: Array,
-    lowercase:true
-  }
+    lowercase: true,
+  },
 });
 
 const Hazard = mongoose.model("Hazard", hazardSchema);
@@ -61,6 +63,6 @@ function validateHazard(hazard) {
 }
 
 module.exports = {
-    Hazard,
-    validateHazard: validateHazard,
+  Hazard,
+  validateHazard: validateHazard,
 };

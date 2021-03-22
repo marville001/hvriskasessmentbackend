@@ -262,6 +262,35 @@ router.put("/cabledamage", auth, async (req, res) => {
   }
 });
 
+router.put("/level", auth, async (req, res) => {
+  const { level, id } = req.body;
+
+  if (!ObjectId.isValid(id)) {
+    return res.status(404).send({
+      success: true,
+      message: "Could not verify the session id",
+    });
+  }
+
+  try {
+    let hvdamage = await HVdamage.findByIdAndUpdate(
+      id,
+      { level: level },
+      { new: true }
+    );
+
+    res.send({
+      success: true,
+      hvdamage,
+    });
+  } catch (error) {
+    res.status(400).send({
+      success: false,
+      message: "An error occured",
+    });
+  }
+});
+
 
 
 module.exports = router;

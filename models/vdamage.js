@@ -49,6 +49,7 @@ const vdamageSchema = new mongoose.Schema({
   level: {
     type: String,
     lowercase: true,
+    default: "green",
   },
   notes: {
     type: Array,
