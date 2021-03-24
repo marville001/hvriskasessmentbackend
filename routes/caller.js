@@ -25,28 +25,36 @@ router.post("/", auth, async (req, res) => {
     organization,
   } = req.body;
 
-  let caller = new Caller({
-    name,
-    sessionid,
-    number,
-    email,
-    supervisor,
-    organization_address,
-    organization_number,
-    location,
-    organization,
-  });
+  try {
+    let caller = new Caller({
+      name,
+      sessionid,
+      number,
+      email,
+      supervisor,
+      organization_address,
+      organization_number,
+      location,
+      organization,
+    });
 
-  const result = await caller.save();
+    const result = await caller.save();
 
-  res.send({
-    success: true,
-    caller: result,
-  });
+    res.send({
+      success: true,
+      caller: result,
+    });
+    
+  } catch (error) {
+    return res.status(400).send({
+      success: false,
+      message: error,
+    });
+  }
 });
 
 router.put("/:id", auth, async (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
   const { error } = validateCaller(req.body);
   if (error)
     return res.status(400).send({

@@ -15,6 +15,7 @@ const callerSchema = new mongoose.Schema({
     type: String,
     minlength: 6,
     maxlength: 255,
+    unique:false
   },
   number: {
     type: String,

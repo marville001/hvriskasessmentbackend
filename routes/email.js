@@ -22,11 +22,15 @@ router.post("/send", async (req, res) => {
   try {
     const transporter = nodemailer.createTransport(
       smtpTransport({
-        service: "gmail",
+        host: "smtp.gmail.com",
+        // service: "gmail",
+        port: 465,
+        secure: true,
         auth: {
           user: "mwangimartin1904@gmail.com",
           pass: "Martin@1904",
         },
+        requireTLS: true,
         tls: {
           rejectUnauthorized: false,
         },

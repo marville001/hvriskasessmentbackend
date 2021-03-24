@@ -21,6 +21,11 @@ const sessionSchema = new mongoose.Schema({
     required: true,
     lowercase: true,
   },
+  endedby:{
+    type: String,
+    lowercase: true,
+    default: null
+  }
 });
 
 const Session = mongoose.model("Session", sessionSchema);

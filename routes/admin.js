@@ -26,7 +26,7 @@ router.get("/all", auth, async (req, res) => {
 });
 
 router.get("/employees/all", auth, async (req, res) => {
-  const employees = await User.find().select("-password");
+  const employees = await User.find().select(["-password","-isAdmin","-__v"]);
   res.send({
     success: true,
     employees,
@@ -34,7 +34,7 @@ router.get("/employees/all", auth, async (req, res) => {
 });
 
 router.get("/sessions/all", auth, async (req, res) => {
-  const sessions = await Session.find();
+  const sessions = await Session.find().select("-_v");
   res.send({
     success: true,
     sessions,
@@ -42,7 +42,7 @@ router.get("/sessions/all", auth, async (req, res) => {
 });
 
 router.get("/callers/all", auth, async (req, res) => {
-  const callers = await Caller.find();
+  const callers = await Caller.find().select("-_v");
   res.send({
     success: true,
     callers,
@@ -89,7 +89,6 @@ router.post("/auth", async (req, res) => {
       .send({ success: false, message: "Invalid email or password..." });
 
   const validPassword = await bcrypt.compare(req.body.password, admin.password);
-  console.log(validPassword);
   if (!validPassword)
     return res
       .status(400)
