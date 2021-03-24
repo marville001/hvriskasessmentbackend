@@ -2,16 +2,16 @@ const express = require("express");
 const _ = require("lodash");
 const auth = require("../middleware/auth");
 const router = express.Router();
-const { Caller, validateCaller } = require("../models/caller");
+const { Caller } = require("../models/caller");
 const ObjectId = require("mongoose").Types.ObjectId;
 
 router.post("/", auth, async (req, res) => {
-  const { error } = validateCaller(req.body);
-  if (error)
-    return res.status(400).send({
-      success: false,
-      message: error.details[0].message,
-    });
+  // const { error } = validateCaller(req.body);
+  // if (error)
+  //   return res.status(400).send({
+  //     success: false,
+  //     message: error.details[0].message,
+  //   });
 
   const {
     name,
@@ -55,12 +55,12 @@ router.post("/", auth, async (req, res) => {
 
 router.put("/:id", auth, async (req, res) => {
   const { id } = req.params;
-  const { error } = validateCaller(req.body);
-  if (error)
-    return res.status(400).send({
-      success: false,
-      message: error.details[0].message,
-    });
+  // const { error } = validateCaller(req.body);
+  // if (error)
+  //   return res.status(400).send({
+  //     success: false,
+  //     message: error.details[0].message,
+  //   });
 
   const {
     name,

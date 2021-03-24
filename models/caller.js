@@ -45,22 +45,22 @@ const callerSchema = new mongoose.Schema({
 
 const Caller = mongoose.model("Caller", callerSchema);
 
-function validateCaller(caller) {
-  const schema = {
-    name: Joi.string().min(5).max(50),
-    sessionid: Joi.string().min(5).max(50),
-    number: Joi.string().max(255),
-    email: Joi.string().min(6).max(255).email(),
-    supervisor: Joi.string().max(255),
-    organization_address: Joi.string().max(1024),
-    organization_number: Joi.string().max(1024),
-    location: Joi.string().max(255),
-    organization: Joi.string().max(255),
-  };
-  return Joi.validate(caller, schema);
-}
+// function validateCaller(caller) {
+//   const schema = {
+//     name: Joi.string().min(5).max(50),
+//     sessionid: Joi.string().min(5).max(50),
+//     number: Joi.string().max(255),
+//     email: Joi.string().min(6).max(255).email(),
+//     supervisor: Joi.string().max(255),
+//     organization_address: Joi.string().max(1024),
+//     organization_number: Joi.string().max(1024),
+//     location: Joi.string().max(255),
+//     organization: Joi.string().max(255),
+//   };
+//   return Joi.validate(caller, schema);
+// }
 
 module.exports = {
   Caller,
-  validateCaller,
+  // validateCaller,
 };
